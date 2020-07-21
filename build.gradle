@@ -1,0 +1,36 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.jmix' version '0.1.8'
+    id 'java'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://nexus.jmix.io/repository/public'
+    }
+}
+
+dependencies {
+    implementation 'io.jmix.starter.standard:jmix-starter-standard:1.0-SNAPSHOT'
+    implementation 'io.jmix.starter.audit:jmix-starter-audit:1.0-SNAPSHOT'
+    implementation 'io.jmix.starter.audit:jmix-starter-audit-ui:1.0-SNAPSHOT'
+    implementation 'io.jmix.starter.sessions:jmix-starter-sessions:1.0-SNAPSHOT'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.session:spring-session-jdbc'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
