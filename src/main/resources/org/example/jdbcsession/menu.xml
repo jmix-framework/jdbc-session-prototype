@@ -2,5 +2,6 @@
 <menu-config xmlns="http://jmix.io/schema/ui/menu">
     <menu id="application" caption="msg://org.example.jdbcsession/menu.application">
         <item screen="userSessions.browse"/>
+        <item screen="session-data"/>
     </menu>
 </menu-config>

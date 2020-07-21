@@ -1,0 +1,16 @@
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="Session data test">
+
+    <layout expand="spacer" spacing="true">
+        <hbox spacing="true">
+            <label value="Current session ID:"/>
+            <label id="currentSessionLabel"/>
+        </hbox>
+        <hbox spacing="true">
+            <label value="Session Attribute"/>
+            <textField id="sessionAttribute"/>
+        </hbox>
+        <button id="attributeBtn" caption="Set attribute value"/>
+        <label id="spacer"/>
+    </layout>
+</window>

@@ -21,6 +21,7 @@ dependencies {
     implementation 'io.jmix.starter.audit:jmix-starter-audit:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.audit:jmix-starter-audit-ui:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.sessions:jmix-starter-sessions:1.0-SNAPSHOT'
+//    implementation 'io.jmix.starter.rest:jmix-starter-rest:1.0-SNAPSHOT'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-jdbc'
 

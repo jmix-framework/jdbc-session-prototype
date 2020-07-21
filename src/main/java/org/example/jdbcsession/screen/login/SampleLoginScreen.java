@@ -109,10 +109,6 @@ public class SampleLoginScreen extends Screen {
             authenticationStrategy.onAuthentication(authentication, (VaadinServletRequest) VaadinService.getCurrentRequest(), (VaadinServletResponse) VaadinService.getCurrentResponse());
             SecurityContextHelper.setAuthentication(authentication);
 
-            if (sessionData.getAttribute("test") == null) {
-                sessionData.setAttribute("test", RandomStringUtils.randomAlphabetic(4));
-            }
-
             String mainScreenId = uiProperties.getMainScreenId();
             screenBuilders.screen(this)
                     .withScreenId(mainScreenId)
