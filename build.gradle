@@ -21,15 +21,20 @@ dependencies {
     implementation 'io.jmix.starter.audit:jmix-starter-audit:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.audit:jmix-starter-audit-ui:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.sessions:jmix-starter-sessions:1.0-SNAPSHOT'
-//    implementation 'io.jmix.starter.rest:jmix-starter-rest:1.0-SNAPSHOT'
+    implementation 'io.jmix.starter.rest:jmix-starter-rest:1.0-SNAPSHOT'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-jdbc'
 
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework.security.oauth:spring-security-oauth2'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.jayway.jsonpath:json-path:2.1.0'
+    testImplementation 'junit:junit'
 }
 
 test {

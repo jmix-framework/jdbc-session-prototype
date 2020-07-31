@@ -9,5 +9,9 @@
         <sqlFile path="classpath:\org\springframework\session\jdbc\schema-postgresql.sql"/>
     </changeSet>
 
+    <changeSet author="jdbcsession" id="1.1">
+        <sqlFile path="classpath:\org\example\jdbcsession\liquibase\token_store.sql"/>
+    </changeSet>
+
 
 </databaseChangeLog>
