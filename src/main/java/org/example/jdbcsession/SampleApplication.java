@@ -19,12 +19,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EnableJdbcHttpSession
+@EnableSpringHttpSession
 public class SampleApplication {
 
 	@Autowired

@@ -4,6 +4,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServletRequest;
 import com.vaadin.server.VaadinServletResponse;
 import io.jmix.core.CoreProperties;
+import io.jmix.core.Events;
 import io.jmix.core.Messages;
 import io.jmix.core.impl.session.SessionDataImpl;
 import io.jmix.core.security.ClientDetails;
@@ -12,6 +13,7 @@ import io.jmix.ui.Notifications;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.UiProperties;
 import io.jmix.ui.action.Action;
+import io.jmix.ui.component.CheckBox;
 import io.jmix.ui.component.ComboBox;
 import io.jmix.ui.component.PasswordField;
 import io.jmix.ui.component.TextField;
@@ -19,25 +21,43 @@ import io.jmix.ui.navigation.Route;
 import io.jmix.ui.screen.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Locale;
+
+import static org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices.DEFAULT_PARAMETER;
 
 @UiController("sample_LoginScreen")
 @UiDescriptor("sample-login-screen.xml")
 @Route(path = "login", root = true)
 public class SampleLoginScreen extends Screen {
 
+    protected final Log logger = LogFactory.getLog(getClass());
+
     @Autowired
     private TextField<String> usernameField;
 
     @Autowired
     private PasswordField passwordField;
+
+    @Autowired
+    protected CheckBox rememberMeCheckBox;
 
     @Autowired
     private ComboBox<Locale> localesField;
@@ -61,10 +81,16 @@ public class SampleLoginScreen extends Screen {
     private ScreenBuilders screenBuilders;
 
     @Autowired
-    protected SessionAuthenticationStrategy authenticationStrategy;
+    protected CompositeSessionAuthenticationStrategy authenticationStrategy;
 
     @Autowired
     protected SessionDataImpl sessionData;
+
+    @Autowired
+    protected RememberMeServices rememberMeServices;
+
+    @Autowired
+    protected Events events;
 
     @Subscribe
     private void onInit(InitEvent event) {
@@ -88,13 +114,13 @@ public class SampleLoginScreen extends Screen {
         login();
     }
 
-    private void login() {
+    protected void login() {
         String username = usernameField.getValue();
         String password = passwordField.getValue() != null ? passwordField.getValue() : "";
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             notifications.create(Notifications.NotificationType.WARNING)
-                    .withCaption(messages.getMessage(getClass(), "emptyUsernameOrPassword"))
+                    .withCaption(messages.getMessage("loginWindow.emptyLoginOrPassword"))
                     .show();
             return;
         }
@@ -106,8 +132,8 @@ public class SampleLoginScreen extends Screen {
                     .build();
             authenticationToken.setDetails(clientDetails);
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            authenticationStrategy.onAuthentication(authentication, (VaadinServletRequest) VaadinService.getCurrentRequest(), (VaadinServletResponse) VaadinService.getCurrentResponse());
-            SecurityContextHelper.setAuthentication(authentication);
+
+            onSuccessfulAuthentication(authentication);
 
             String mainScreenId = uiProperties.getMainScreenId();
             screenBuilders.screen(this)
@@ -116,10 +142,30 @@ public class SampleLoginScreen extends Screen {
                     .build()
                     .show();
         } catch (BadCredentialsException e) {
-            notifications.create(Notifications.NotificationType.ERROR)
-                    .withCaption(messages.getMessage(getClass(), "loginFailed"))
-                    .withDescription(e.getMessage())
-                    .show();
+            showLoginException(e.getMessage());
         }
     }
+
+    protected void onSuccessfulAuthentication(Authentication authentication) {
+        SecurityContextHelper.setAuthentication(authentication);
+
+        VaadinServletRequest request = VaadinServletRequest.getCurrent();
+        VaadinServletResponse response = VaadinServletResponse.getCurrent();
+
+        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
+        authenticationStrategy.onAuthentication(authentication, request, response);
+        rememberMeServices.loginSuccess(request, response, authentication);
+
+        events.publish(new InteractiveAuthenticationSuccessEvent(
+                authentication, this.getClass()));
+    }
+
+    protected void showLoginException(String message) {
+        String title = messages.getMessage("loginWindow.loginFailed");
+        notifications.create(Notifications.NotificationType.ERROR)
+                .withCaption(title)
+                .withDescription(message)
+                .show();
+    }
+
 }
