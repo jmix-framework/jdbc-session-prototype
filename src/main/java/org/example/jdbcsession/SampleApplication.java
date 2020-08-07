@@ -25,7 +25,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EnableSpringHttpSession
+@EnableJdbcHttpSession
 public class SampleApplication {
 
 	@Autowired
