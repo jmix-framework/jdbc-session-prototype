@@ -10,6 +10,13 @@
     </changeSet>
 
     <changeSet author="jdbcsession" id="1.1">
+        <sql>
+            create table persistent_logins (username varchar(64) not null, series varchar(64) primary key, token
+            varchar(64) not null, last_used timestamp not null)
+        </sql>
+    </changeSet>
+
+    <changeSet author="jdbcsession" id="1.2">
         <sqlFile path="classpath:\org\example\jdbcsession\liquibase\token_store.sql"/>
     </changeSet>
 

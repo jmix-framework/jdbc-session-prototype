@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -73,6 +75,14 @@ public class SampleApplication {
 		dbRole1AdminAssignment.setRoleCode(dbRole1.getCode());
 
 		dataManager.save(dbRole1, dbRole1AdminAssignment);
+	}
+
+	@Primary
+	@Bean
+	protected PersistentTokenRepository rememberMeRepository() {
+		JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+		jdbcTokenRepository.setDataSource(dataSource());
+		return jdbcTokenRepository;
 	}
 
 	private void initUsers() {

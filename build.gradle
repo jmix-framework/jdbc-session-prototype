@@ -1,7 +1,12 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.4.RELEASE'
-    id 'io.jmix' version '0.1.8'
+    id 'io.jmix' version '0.1.11'
     id 'java'
+}
+
+apply plugin: 'org.springframework.boot'
+
+jmix {
+    bomVersion = '1.0.0-SNAPSHOT'
 }
 
 group = 'org.example'
@@ -21,7 +26,7 @@ dependencies {
     implementation 'io.jmix.starter.audit:jmix-starter-audit:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.audit:jmix-starter-audit-ui:1.0-SNAPSHOT'
     implementation 'io.jmix.starter.sessions:jmix-starter-sessions:1.0-SNAPSHOT'
-    implementation 'io.jmix.starter.rest:jmix-starter-rest:1.0-SNAPSHOT'
+   implementation 'io.jmix.starter.rest:jmix-starter-rest:1.0-SNAPSHOT'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-jdbc'
 
@@ -35,6 +40,12 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'com.jayway.jsonpath:json-path:2.1.0'
     testImplementation 'junit:junit'
+}
+
+processResources {
+    with copySpec {
+        from sourceSets.main.allJava
+    }
 }
 
 test {
