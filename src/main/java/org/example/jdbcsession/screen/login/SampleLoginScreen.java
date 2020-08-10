@@ -152,8 +152,8 @@ public class SampleLoginScreen extends Screen {
         VaadinServletRequest request = VaadinServletRequest.getCurrent();
         VaadinServletResponse response = VaadinServletResponse.getCurrent();
 
-        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
         authenticationStrategy.onAuthentication(authentication, request, response);
+        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
         rememberMeServices.loginSuccess(request, response, authentication);
 
         events.publish(new InteractiveAuthenticationSuccessEvent(
