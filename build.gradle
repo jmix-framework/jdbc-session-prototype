@@ -33,7 +33,7 @@ dependencies {
     implementation 'io.jmix.security:jmix-security-ui-starter'
     implementation 'io.jmix.security:jmix-security-data-starter'
     implementation 'io.jmix.sessions:jmix-sessions-starter'
-    implementation 'io.jmix.rest:jmix-starter-rest:1.0.0-SNAPSHOT'
+    implementation 'io.jmix.rest:jmix-rest-starter'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-jdbc'

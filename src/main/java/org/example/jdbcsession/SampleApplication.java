@@ -1,6 +1,7 @@
 package org.example.jdbcsession;
 
 import io.jmix.core.DataManager;
+import io.jmix.core.Metadata;
 import io.jmix.core.security.Authenticator;
 import io.jmix.core.security.UserRepository;
 import io.jmix.core.security.impl.CoreUser;
@@ -19,6 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
@@ -40,6 +44,15 @@ public class SampleApplication {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private Metadata metadata;
+
+	@Autowired
+	protected DataSource dataSource;
+
+	@Autowired
+	protected AuthenticationKeyGenerator keyGenerator;
 
 	@Autowired
 	private InMemoryRoleAssignmentProvider inMemoryRoleAssignmentProvider;
@@ -66,15 +79,23 @@ public class SampleApplication {
 	}
 
 	private void initDatabaseRoles() {
-		RoleEntity dbRole1 = new RoleEntity();
+		RoleEntity dbRole1 = metadata.create(RoleEntity.class);
 		dbRole1.setName("DB role 1");
 		dbRole1.setCode("dbRole1");
 
-		RoleAssignmentEntity dbRole1AdminAssignment = new RoleAssignmentEntity();
+		RoleAssignmentEntity dbRole1AdminAssignment = metadata.create(RoleAssignmentEntity.class);
 		dbRole1AdminAssignment.setUserKey("admin");
 		dbRole1AdminAssignment.setRoleCode(dbRole1.getCode());
 
 		dataManager.save(dbRole1, dbRole1AdminAssignment);
+	}
+
+	@Primary
+	@Bean(name = "rest_tokenStore")
+	protected TokenStore tokenStore() {
+		JdbcTokenStore tokenStore = new JdbcTokenStore(dataSource);
+		tokenStore.setAuthenticationKeyGenerator(keyGenerator);
+		return tokenStore;
 	}
 
 	@Primary
