@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '1.0.0-SNAPSHOT'
+    bomVersion = '0.1.0-SNAPSHOT'
 }
 
 group = 'org.example'
@@ -26,6 +26,7 @@ dependencies {
     implementation 'io.jmix.data:jmix-data-starter'
     implementation 'io.jmix.ui:jmix-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-data-starter'
+    implementation 'io.jmix.audit:jmix-audit-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-themes-compiled'
     implementation 'io.jmix.ui:jmix-ui-widgets-compiled'
     implementation 'io.jmix.security:jmix-security-starter'

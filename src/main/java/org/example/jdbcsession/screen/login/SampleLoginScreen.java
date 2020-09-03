@@ -1,14 +1,10 @@
 package org.example.jdbcsession.screen.login;
 
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServletRequest;
 import com.vaadin.server.VaadinServletResponse;
 import io.jmix.core.CoreProperties;
-import io.jmix.core.Events;
 import io.jmix.core.Messages;
-import io.jmix.core.impl.session.SessionDataImpl;
 import io.jmix.core.security.ClientDetails;
-import io.jmix.core.security.SecurityContextHelper;
 import io.jmix.ui.Notifications;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.UiProperties;
@@ -19,7 +15,6 @@ import io.jmix.ui.component.PasswordField;
 import io.jmix.ui.component.TextField;
 import io.jmix.ui.navigation.Route;
 import io.jmix.ui.screen.*;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,18 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Locale;
 
 import static org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices.DEFAULT_PARAMETER;
@@ -82,15 +68,6 @@ public class SampleLoginScreen extends Screen {
 
     @Autowired
     protected CompositeSessionAuthenticationStrategy authenticationStrategy;
-
-    @Autowired
-    protected SessionDataImpl sessionData;
-
-    @Autowired
-    protected RememberMeServices rememberMeServices;
-
-    @Autowired
-    protected Events events;
 
     @Subscribe
     private void onInit(InitEvent event) {
@@ -147,17 +124,11 @@ public class SampleLoginScreen extends Screen {
     }
 
     protected void onSuccessfulAuthentication(Authentication authentication) {
-        SecurityContextHelper.setAuthentication(authentication);
-
         VaadinServletRequest request = VaadinServletRequest.getCurrent();
         VaadinServletResponse response = VaadinServletResponse.getCurrent();
+        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
 
         authenticationStrategy.onAuthentication(authentication, request, response);
-        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
-        rememberMeServices.loginSuccess(request, response, authentication);
-
-        events.publish(new InteractiveAuthenticationSuccessEvent(
-                authentication, this.getClass()));
     }
 
     protected void showLoginException(String message) {
