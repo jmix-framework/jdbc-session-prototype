@@ -17,12 +17,12 @@
 package org.example.jdbcsession;
 
 import io.jmix.core.annotation.JmixModule;
-import io.jmix.rest.RestConfiguration;
+//import io.jmix.rest.RestConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@JmixModule(dependsOn = RestConfiguration.class)
+//@JmixModule(dependsOn = RestConfiguration.class)
 @PropertySource("classpath:/application.properties")
 public class SampleRestTestConfiguration {
 
