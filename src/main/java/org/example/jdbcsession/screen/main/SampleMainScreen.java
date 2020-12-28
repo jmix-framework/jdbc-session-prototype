@@ -5,13 +5,17 @@ import io.jmix.ui.component.Window;
 import io.jmix.ui.screen.Screen;
 import io.jmix.ui.screen.UiController;
 import io.jmix.ui.screen.UiDescriptor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @UiController("sample_MainScreen")
 @UiDescriptor("sample-main-screen.xml")
-//@LoadDataBeforeShow
 public class SampleMainScreen extends Screen implements Window.HasWorkArea {
+
+    @Autowired
+    private AppWorkArea workArea;
+
     @Override
     public AppWorkArea getWorkArea() {
-        return (AppWorkArea) getWindow().getComponent("workArea");
+        return workArea;
     }
 }

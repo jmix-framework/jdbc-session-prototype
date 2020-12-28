@@ -1,12 +1,12 @@
 plugins {
-    id 'io.jmix' version '0.1.11'
+    id 'io.jmix' version '0.2.0'
     id 'java'
 }
 
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '0.1.0-SNAPSHOT'
+    bomVersion = '0.3.0-SNAPSHOT'
 }
 
 group = 'org.example'
@@ -26,30 +26,24 @@ dependencies {
     implementation 'io.jmix.data:jmix-data-starter'
     implementation 'io.jmix.ui:jmix-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-data-starter'
-    implementation 'io.jmix.audit:jmix-audit-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-themes-compiled'
     implementation 'io.jmix.ui:jmix-ui-widgets-compiled'
     implementation 'io.jmix.security:jmix-security-starter'
     implementation 'io.jmix.security:jmix-security-ui-starter'
     implementation 'io.jmix.security:jmix-security-data-starter'
+    implementation 'io.jmix.localfs:jmix-localfs-starter'
+
     implementation 'io.jmix.sessions:jmix-sessions-starter'
-//    implementation 'io.jmix.starter.rest:jmix-starter-rest'
+    implementation 'io.jmix.audit:jmix-audit-starter'
+    implementation 'io.jmix.audit:jmix-audit-ui-starter'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-jdbc'
 
     runtimeOnly 'org.postgresql:postgresql'
 
-//    themes 'io.jmix.ui:jmix-ui-themes'
-
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-}
-
-processResources {
-    with copySpec {
-        from sourceSets.main.allJava
     }
 }
 

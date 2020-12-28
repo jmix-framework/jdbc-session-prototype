@@ -5,16 +5,5 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="jdbcsession" id="1.0">
-        <sqlFile path="classpath:\org\springframework\session\jdbc\schema-postgresql.sql"/>
-    </changeSet>
-
-    <changeSet author="jdbcsession" id="1.1">
-        <sql>
-            create table persistent_logins (username varchar(64) not null, series varchar(64) primary key, token
-            varchar(64) not null, last_used timestamp not null)
-        </sql>
-    </changeSet>
-
-
+    <includeAll path="/org/example/jdbcsession/liquibase/changelog"/>
 </databaseChangeLog>

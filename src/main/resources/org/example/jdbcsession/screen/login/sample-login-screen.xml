@@ -4,7 +4,7 @@
     <actions>
         <action id="submit"
                 caption="msg://loginButton"
-                icon="app/images/login-button.png"
+                icon="CHECK"
                 shortcut="ENTER"/>
     </actions>
 
@@ -23,7 +23,7 @@
                     <label id="welcomeLabel"
                            align="MIDDLE_LEFT"
                            stylename="c-login-caption"
-                           value="Welcome to Sample 2"/>
+                           value="msg://welcomeLabel"/>
                 </hbox>
 
                 <vbox id="loginForm"
