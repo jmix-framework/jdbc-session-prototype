@@ -13,7 +13,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EnableJdbcHttpSession
+//@EnableJdbcHttpSession
 public class SampleApplication {
 
     public static void main(String[] args) {

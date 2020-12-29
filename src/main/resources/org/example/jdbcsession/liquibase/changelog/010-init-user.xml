@@ -55,9 +55,9 @@
 
     </changeSet>
 
-    <changeSet id="5" author="jdbcsession">
-        <sqlFile path="classpath:\org\springframework\session\jdbc\schema-postgresql.sql"/>
-    </changeSet>
+<!--    <changeSet id="5" author="jdbcsession">-->
+<!--        <sqlFile path="classpath:\org\springframework\session\jdbc\schema-postgresql.sql"/>-->
+<!--    </changeSet>-->
 
     <changeSet id="6" author="jdbcsession">
         <sql>
